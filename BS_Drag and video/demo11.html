@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 字体样式 -->
+    <link rel="stylesheet" href="./css/player.css">
+    <!-- <link rel="stylesheet" href="./css/style.css"> -->
+    <style> 
+    @font-face {
+        font-family: 'icomoon';
+        src:  url('fonts/icomoon.eot?i3tyxq');
+        src:  url('fonts/icomoon.eot?i3tyxq#iefix') format('embedded-opentype'),
+          url('fonts/icomoon.ttf?i3tyxq') format('truetype'),
+          url('fonts/icomoon.woff?i3tyxq') format('woff'),
+          url('fonts/icomoon.svg?i3tyxq#icomoon') format('svg');
+        font-weight: normal;
+        font-style: normal;
+        font-display: block;
+      }
+        .fa {
+            font-family: "icomoon";
+        }
+        .fa-play::after {
+            content: \ea1c;
+        }
+        
+    </style>
+</head>
+<body>
+    <figure>
+        <figcaption>视频播放器</figcaption>
+        <div class="player">
+            <video src="./video/fun.mp4"></video>
+            <div class="controls">
+                <!-- 播放，暂停 -->
+                <a href="javascript:;" class="switch fa fa-play"></a>
+                <!-- 播放进度 -->
+                <div class="progress">
+                    <div class="line"></div>
+                    <div class="bar"></div>
+                </div>
+                <!-- 当前播放时间/播放总时长 -->
+                <div class="timer">
+                    <span class="current">00:00:00</span> / <span class="total">00:00:00</span>
+                </div>
+                <!-- 全屏/取消全屏 -->
+                <a href="javascript:;" class="expend fa fa-arrows-alt"></a>
+            </div>
+        </div>
+    </figure>
+    <script src="./js/jquery-3.6.0.js"></script>
+    <script>
+        var video = $("video").get(0);
+        function formatTime(time) {
+            var h = Math.floor(time / 3600);
+            var m = Math.floor(time % 3600 / 60);
+            var s = Math.floor(time % 60);
+            return (h < 10 ? "0" + h : h) + ":" + (m < 10 ? "0" + m : m) + (s < 10 ? "0" + s :s);
+        }
+        video.oncanplay = function() {
+            $("video").show();
+            var totalTime = formatTime(video.duration);
+            $(".total").html(totalTime);
+        };
+        
+        $(".switch").on("click",function() {
+            if ($(this).hasClass("fa-play")) {
+                video.play();
+                $(this).addClass("fa-pause").removeClass("fa-play");
+            }else {
+                video.pause();
+                $(this).addClass("fa-play").removeClass("fa-pause");
+            }
+        });
+
+        video.ontimeupdate = function() {
+            var w = video.currenttime / video.duration * 100 + "%";
+            $(".line").css("width",w);
+            $(".current").html(formatTime(video.currentTime));
+        };
+
+        $(".expand").on("clcik", function() {
+            if ($(this).hasClass("fa-arrows-alt")) {
+                $(".player").get(0).requestFullscreen();
+                $(this).addClass("fa-compress").removeClass("fa-arrows-alt");
+            } else {
+                document.exitFullscreen();
+                $(this).addClass("fa-arrows-alt").removeClass("fa-compress");
+            }
+        });
+
+        video.onended = function() {
+            video.currentTime = 0;
+            $(".switch").addClass("fa-play").removeClass("fa-pause");
+        };
+
+        $(".bar").on("click",function(event) {
+            var offset = event.offsetX;
+            var current = offset / $(this).width() * video.duration;
+            video.currentTime = current;
+        })
+    </script>
+</body>
+</html>
