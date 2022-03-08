@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="demo">获得您的坐标：</p>
+    <button onclick="getLocation()">试一下</button>
+    <script>
+        var x = document.getElementById('demo');
+        function getLocation() {
+            if(navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPostion,showError);
+            }else {
+                x.innerHTML = '当前浏览器不支持定位';
+            }
+        }
+        //显示位置信息
+        function showPostion(postion) {
+            x.innerHTML = 
+            'Latitude:' + postion.coords.latitude +
+            '<br>Longitude' +postion.coords.longitude;
+        }
+        //获取失败，显示报错
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                x.innerHTML = "用户拒绝地理位置请求";
+                break;
+                case error.POSTIONUNAVAILABLE:
+                X.innerHTML = '获取用户位置的请求超时';
+                break;
+                case error.UNKNOW_ERROR:
+                X.innerHTML = '发生了不明错误';
+                break;
+            }
+        }
+    </script>
+</body>
+</html>

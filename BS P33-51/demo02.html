@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div:-webkit-full-screen {
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="./img/pic1.png" height="300" alt="">
+        <button id="full">全屏显示</button>
+        <button id="cancelFull">取消全屏</button>
+        <button id="isFull">是否全屏</button>
+    </div>
+</body>
+</html>
+<script>
+    //显示全屏
+    var div = document.querySelector('div');
+    document.querySelector('#full').onclick = function() {
+        if(div.requestFullscreen) {
+            div.requestFullscreen();
+        }else if (div.webkitrequestFullscreen) {
+            div.webkitrequestFullscreen();
+        }else if (div.mozrequestFullscreen) {
+            div.mozrequestFullscreen();
+        }else if (div.msrequestFullscreen) {
+            div.msrequestFullscreen();
+        }else if (div.orequestFullscreen) {
+            div.orequestFullscreen();
+        } else {
+            alert('暂不支持在您的浏览器中全屏');
+        }
+    };
+    // 取消全屏
+    document.querySelector('#cancelFull').onclick = function() {
+        if(document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitCancelFullScreen) {
+            document.webkitCancelFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullscreen();
+        }else if (document.msExitFullScreen) {
+            document.msExitFullscreen();
+        }else if (document.oCancelFullScreen) {
+            document.oCancelFullscreen();
+        } else {
+            alert('暂不支持您的浏览器');
+        }
+    };
+    // 是否全屏
+    document.querySelector('#isFull').onclick = function() {
+        alert(document.webkitIsFullScreen);
+    };
+</script>
